@@ -291,10 +291,12 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">🧠</span>Big Five 性格特性</h3>' +
+        '<p class="panel-intro">Big Five（OCEAN）は、Costa & McCraeが体系化した性格心理学の最も堅牢なモデルです。40年以上の研究蓄積があり、文化を超えて再現性が確認されています。開放性（Openness）・誠実性（Conscientiousness）・外向性（Extraversion）・協調性（Agreeableness）・情緒安定性（Neuroticism の逆転）の5因子によって、あなたの性格の基本構造を描写します。スコアは0〜100で表示され、50が平均的な水準です。</p>' +
         '<div class="chart-container">' + radarSvg + '</div>' +
       '</div>' +
       '<div class="result-card">' +
         '<h3><span class="icon">📝</span>各特性の詳細</h3>' +
+        '<p class="panel-intro">以下は、あなたの回答から算出された各因子のスコアと、その意味の解説です。高い・低いに良し悪しはなく、それぞれが異なる強みと行動パターンを示しています。</p>' +
         descHtml +
       '</div>';
   },
@@ -432,6 +434,7 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">💼</span>RIASEC 職業適性</h3>' +
+        '<p class="panel-intro">Holland RIASECは、心理学者John Hollandが開発し、米国労働省O*NETに正式採用されている職業適性モデルです。現実型（Realistic）・研究型（Investigative）・芸術型（Artistic）・社会型（Social）・企業型（Enterprising）・慣習型（Conventional）の6類型であなたの興味パターンを分類します。上位3つの類型を組み合わせた3文字のコード（ホランド・コード）が、あなたの職業的パーソナリティを表します。</p>' +
         barHtml + hollandHtml + top3Html +
       '</div>' +
       careerHtml;
@@ -486,10 +489,12 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">⭐</span>あなたの強みトップ3</h3>' +
+        '<p class="panel-intro">Peterson & Seligmanのポジティブ心理学理論に基づき、あなたの中核的な強みを特定しました。世界中の哲学・宗教・文化に共通して見られる人間の美徳を6カテゴリに分類し、回答から最も顕著な強みを抽出しています。</p>' +
         topHtml +
       '</div>' +
       '<div class="result-card">' +
         '<h3><span class="icon">📊</span>6つの美徳スコア</h3>' +
+        '<p class="panel-intro">VIA-IS（Values in Action Inventory of Strengths）の6美徳カテゴリそれぞれのスコアです。スコアが高い美徳は、あなたが日常的に発揮している強みの領域を示しています。自分の強みを意識的に活用することで、ウェルビーイング（幸福感）の向上に繋がることが研究で示されています。</p>' +
         barHtml + descHtml +
       '</div>';
   },
@@ -548,6 +553,7 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">🤝</span>愛着スタイル診断</h3>' +
+        '<p class="panel-intro">Bowlbyの愛着理論をBartholomewが成人向けに発展させたモデルに基づく判定結果です。幼少期からの対人経験を通じて形成される「自己観」（自分は愛される価値があるか）と「他者観」（他者は信頼できるか）の2軸から、あなたの対人関係パターンを4つのスタイルに分類します。愛着スタイルは固定的なものではなく、自己理解と意識的な努力によって変化させることが可能です。</p>' +
         visualHtml + barHtml + advHtml +
       '</div>' +
       relHtml;
@@ -606,10 +612,12 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">👨‍👩‍👦</span>エゴグラム（交流分析）</h3>' +
+        '<p class="panel-intro">Eric Berneの交流分析理論に基づき、John Dusayが開発したエゴグラムの結果です。人間の心の中には「親（Parent）」「大人（Adult）」「子ども（Child）」の3つの自我状態があり、さらに親はCP（批判的）とNP（養育的）に、子どもはFC（自由）とAC（順応）に分かれます。この5つの自我状態のエネルギー配分バランスが、あなたの対人コミュニケーションの特徴を表します。</p>' +
         patternHtml + barHtml +
       '</div>' +
       '<div class="result-card">' +
         '<h3><span class="icon">📝</span>5つの自我状態の詳細</h3>' +
+        '<p class="panel-intro">各自我状態のスコアと解説です。エゴグラムでは「高い＝良い」ではなく、5つの自我状態のバランスが重要です。極端に低い自我状態を意識的に育てることで、コミュニケーションの幅を広げることができます。</p>' +
         descHtml +
       '</div>' +
       advHtml;
@@ -681,6 +689,7 @@ const App = {
     panel.innerHTML =
       '<div class="result-card">' +
         '<h3><span class="icon">🌿</span>感受性プロファイル</h3>' +
+        '<p class="panel-intro">Elaine Aronの感覚処理感受性（Sensory Processing Sensitivity）理論に基づく評価結果です。人口の約15〜20%が「高感受性（HSP: Highly Sensitive Person）」に該当するとされ、環境の微細な変化をキャッチする能力に優れる一方、過剰な刺激でストレスを感じやすい傾向があります。感覚過敏・情動反応性・処理の深さの3因子から、あなたの感受性パターンとストレス対処法を分析しました。</p>' +
         sensHtml + sensBarHtml + tipsHtml +
       '</div>' +
       stressHtml + copingHtml + resHtml;

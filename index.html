@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>多次元パーソナリティ検査</title>
-  <meta name="description" content="6つの科学的理論を統合した多次元パーソナリティ検査。Big Five、Holland RIASEC、VIA-IS、愛着理論、SPS、交流分析の29次元で個人特性を立体的に分析。">
+  <meta name="description" content="6つの科学的理論を統合した多次元パーソナリティ検査。Big Five、Holland RIASEC、VIA-IS、愛着理論、SPS、交流分析の29次元で個人特性を立体的に分析。全70問・約10〜15分で完了。">
+  <meta name="theme-color" content="#0f0f1a">
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -15,46 +18,78 @@
   <div id="landing" class="landing">
     <div class="landing-content">
       <div class="landing-header">
+        <div class="landing-icon">
+          <img src="assets/icon.svg" alt="" width="72" height="72">
+        </div>
         <h1>多次元<span class="accent">パーソナリティ</span>検査</h1>
         <p class="subtitle">
-          世界の心理学研究で最も高いエビデンスを持つ6つの理論を統合し、「あなたがどんな人か」だけでなく「どんな仕事環境で力を発揮できるか」「何があなたの動機になるか」まで、29の次元から立体的に分析します。
+          Multidimensional Personality Inventory
         </p>
       </div>
 
       <div class="landing-intro">
-        全70問、5段階評価。直感で答えてください。正解・不正解はありません。
+        <p>この検査は、世界の心理学研究で最も高いエビデンスを持つ<strong>6つの理論</strong>を統合し、あなたのパーソナリティを<strong>29の次元</strong>から立体的に分析します。</p>
+        <p>「あなたがどんな人か」だけでなく、「どんな仕事環境で力を発揮できるか」「何があなたの動機になるか」「どんな人間関係のパターンを持っているか」「ストレスにどう対処すればよいか」まで、多角的にプロファイリングします。</p>
+        <p class="landing-intro-note">全70問・5段階評価。直感で答えてください。正解・不正解はありません。所要時間は約10〜15分です。</p>
       </div>
 
       <div class="theory-grid">
         <div class="theory-card" data-theory="bigfive">
           <div class="theory-label">Big Five（OCEAN）</div>
           <div class="theory-title">性格5因子モデル</div>
-          <div class="theory-desc">40年以上の研究蓄積を持つ性格心理学の最も堅牢なモデル。数千の研究で職務パフォーマンスとの相関が実証済み。</div>
+          <div class="theory-desc">Costa & McCraeが体系化し、40年以上の研究蓄積を持つ性格心理学の最も堅牢なモデルです。開放性・誠実性・外向性・協調性・情緒安定性の5因子から、性格の基本構造を測定します。数千の研究で職務パフォーマンス・学業成績・対人関係の質との相関が実証されています。</div>
         </div>
         <div class="theory-card" data-theory="riasec">
           <div class="theory-label">Holland RIASEC</div>
           <div class="theory-title">職業興味6類型</div>
-          <div class="theory-desc">米国労働省O*NETに採用される職業適性の国際標準。個人の興味と職業環境の一致度で満足度を予測。</div>
+          <div class="theory-desc">John Hollandが提唱し、米国労働省O*NETに正式採用されている職業適性の国際標準モデルです。現実型・研究型・芸術型・社会型・企業型・慣習型の6類型で、個人の興味パターンと職業環境の一致度（適合度）から、職業満足度とパフォーマンスを予測します。</div>
         </div>
         <div class="theory-card" data-theory="strengths">
           <div class="theory-label">VIA-IS（Peterson & Seligman）</div>
           <div class="theory-title">性格的強み6美徳</div>
-          <div class="theory-desc">ポジティブ心理学の基盤理論。24の性格的強みを6つの美徳カテゴリに分類し、個人の中核的な強みを特定。</div>
+          <div class="theory-desc">ポジティブ心理学の基盤理論として、Peterson & Seligmanが世界中の哲学・宗教・文化に共通する人間の美徳を体系化したものです。知恵・勇気・人間性・正義・節制・超越性の6カテゴリ・24の性格的強みから、あなたの中核的な強みを特定します。</div>
         </div>
         <div class="theory-card" data-theory="attachment">
           <div class="theory-label">Bowlby / Bartholomew</div>
           <div class="theory-title">愛着スタイル4類型</div>
-          <div class="theory-desc">発達心理学の愛着理論に基づく対人関係パターン。自己観と他者観の2軸で親密な関係の質を構造的に分析。</div>
+          <div class="theory-desc">Bowlbyの愛着理論をBartholomewが成人向けに発展させた対人関係パターンモデルです。「自己観」（自分は愛される価値があるか）と「他者観」（他者は信頼できるか）の2軸から、安定型・不安型・回避型・混乱型の4類型を判定し、親密な関係の質を構造的に分析します。</div>
         </div>
         <div class="theory-card" data-theory="sensitivity">
           <div class="theory-label">SPS / HSP（Aron）</div>
           <div class="theory-title">感覚処理感受性</div>
-          <div class="theory-desc">Aronが提唱した神経感受性理論。環境刺激への処理深度・情動反応性・感覚閾値の3因子で感受性を定量評価。</div>
+          <div class="theory-desc">Elaine Aronが提唱した神経感受性理論に基づく尺度です。人口の約15〜20%が持つとされる高感受性（HSP）特性を、感覚過敏・情動反応性・処理の深さの3因子で定量評価します。環境刺激への反応パターンを把握し、最適なセルフケア戦略の立案に活用できます。</div>
         </div>
         <div class="theory-card" data-theory="egogram">
           <div class="theory-label">交流分析（Berne / Dusay）</div>
           <div class="theory-title">エゴグラム5自我状態</div>
-          <div class="theory-desc">Berneの交流分析理論に基づくDusayのエゴグラム。CP・NP・A・FC・ACの5つの自我状態バランスから対人パターンを可視化。</div>
+          <div class="theory-desc">Eric Berneの交流分析理論に基づき、John Dusayが開発したエゴグラムです。CP（厳格な親）・NP（養育的な親）・A（大人）・FC（自由な子ども）・AC（順応した子ども）の5つの自我状態のエネルギーバランスから、対人コミュニケーションのパターンと傾向を可視化します。</div>
+        </div>
+      </div>
+
+      <div class="landing-methodology">
+        <h2>検査の方法論</h2>
+        <div class="methodology-content">
+          <div class="methodology-item">
+            <div class="methodology-icon">01</div>
+            <div>
+              <strong>多理論統合アプローチ</strong>
+              <p>単一の理論では捉えきれない人間の複雑さを、6つの独立した理論を組み合わせることで立体的に描写します。性格構造（Big Five）、職業適性（RIASEC）、強み（VIA-IS）、対人パターン（愛着理論）、感受性（SPS）、自我状態（エゴグラム）を同時に測定することで、相互の関連性も含めた総合的なプロファイルを生成します。</p>
+            </div>
+          </div>
+          <div class="methodology-item">
+            <div class="methodology-icon">02</div>
+            <div>
+              <strong>29次元の多軸分析</strong>
+              <p>Big Five 5因子 + RIASEC 6類型 + VIA-IS 6美徳 + 愛着 4類型 + SPS 3因子 + エゴグラム 5状態 = 計29次元。各次元を100点満点でスコアリングし、あなただけの固有のプロファイルパターンを算出します。</p>
+            </div>
+          </div>
+          <div class="methodology-item">
+            <div class="methodology-icon">03</div>
+            <div>
+              <strong>プライバシー完全保護</strong>
+              <p>すべての回答データはブラウザ内（クライアントサイド）でのみ処理されます。外部サーバーへの送信、Cookie保存、トラッキングは一切行いません。検査終了後、ブラウザを閉じればデータは完全に消去されます。</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -68,7 +103,9 @@
         <div class="stat">約10〜15分</div>
       </div>
 
-      <p class="landing-privacy">※ 回答データはブラウザ内でのみ処理され、外部サーバーへの送信は一切行いません。</p>
+      <div class="landing-disclaimer">
+        <p>※ 本検査は自己理解の補助を目的としたセルフアセスメントツールです。臨床的な心理診断に代わるものではありません。結果の解釈には個人差があり、あくまで自己理解を深めるための参考情報としてご活用ください。</p>
+      </div>
 
       <button class="btn-start" id="btnStart">検査を開始する</button>
     </div>
@@ -94,8 +131,8 @@
     </div>
     <div class="question-area" id="questionArea"></div>
     <div class="quiz-nav">
-      <button class="btn-nav" id="btnPrev">← 前へ</button>
-      <button class="btn-nav primary" id="btnNext">次へ →</button>
+      <button class="btn-nav" id="btnPrev">&larr; 前へ</button>
+      <button class="btn-nav primary" id="btnNext">次へ &rarr;</button>
     </div>
   </div>
 
@@ -114,11 +151,12 @@
     </div>
     <div class="tab-content" id="tabContent"></div>
     <div class="action-bar">
-      <button class="btn-action" id="btnShare">📋 結果をコピー</button>
+      <button class="btn-action" id="btnShare">&#x1F4CB; 結果をコピー</button>
       <button class="btn-action primary" id="btnRestart">もう一度検査する</button>
     </div>
     <footer class="app-footer">
-      <p>多次元パーソナリティ検査 — 6つの科学的理論に基づく自己分析ツール</p>
+      <p>多次元パーソナリティ検査 &mdash; Multidimensional Personality Inventory</p>
+      <p>6つの科学的理論に基づく29次元の自己分析ツール</p>
       <p>※ 本検査は自己理解の補助を目的としており、臨床的な診断に代わるものではありません</p>
     </footer>
   </div>
