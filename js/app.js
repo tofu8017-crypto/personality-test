@@ -34,6 +34,21 @@ const App = {
   },
 
   // ==========================================================
+  // セクションSVGアイコン
+  // ==========================================================
+  getSectionSvg(sectionId, color) {
+    var icons = {
+      bigfive: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>',
+      riasec: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8l3 3 2-2 5 5"/></svg>',
+      strengths: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      attachment: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      sensitivity: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>',
+      egogram: '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/><path d="M2 20h20"/></svg>'
+    };
+    return icons[sectionId] || '';
+  },
+
+  // ==========================================================
   // 画面遷移
   // ==========================================================
   start() {
@@ -59,10 +74,10 @@ const App = {
     const section = SECTIONS[index];
 
     // セクションヘッダー更新
-    document.getElementById('sectionIcon').textContent = section.icon;
+    document.getElementById('sectionIcon').innerHTML = this.getSectionSvg(section.id, section.color);
     document.getElementById('sectionTitle').textContent = section.title;
     document.getElementById('sectionSubtitle').textContent = section.subtitle;
-    document.getElementById('sectionLabel').textContent = section.icon + ' ' + section.title;
+    document.getElementById('sectionLabel').textContent = section.title;
 
     // セクション内の質問取得
     const sectionQuestions = QUESTIONS.filter(function(q) { return q.section === section.id; });

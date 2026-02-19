@@ -391,8 +391,20 @@ body {
 }
 
 .section-header .icon {
-  font-size: 2.5rem;
-  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.section-header .icon svg {
+  width: 28px;
+  height: 28px;
 }
 
 .section-header h2 {
