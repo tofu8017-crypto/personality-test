@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>強みドメイン診断 - アキネーター方式</title>
+  <meta name="description" content="アキネーター方式のアダプティブ質問で、あなたの強みドメインを20問で割り出します。8つの強みドメインからTOP3を特定。">
+  <meta name="theme-color" content="#0f0f1a">
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link rel="stylesheet" href="css/strength.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       Landing Page
+       ============================================================ -->
+  <div id="landing" class="landing">
+    <div class="landing-content">
+      <div class="landing-orb"></div>
+      <h1>強み<span class="accent">ドメイン</span>診断</h1>
+      <p class="subtitle">Adaptive Strength Domain Finder</p>
+
+      <div class="landing-info">
+        <p>アキネーター方式のアダプティブ質問で、あなたの<strong>強みドメイン</strong>を割り出します。あなたの回答に応じて次の質問が動的に変化し、たった<strong>20問</strong>で8つの強みドメインからTOP3を特定します。</p>
+      </div>
+
+      <div class="landing-features">
+        <div class="feature-card">
+          <div class="feature-icon">🔮</div>
+          <div class="feature-title">アダプティブ質問</div>
+          <div class="feature-desc">回答に応じて次の質問を動的に選択。情報利得を最大化する質問を自動で出題</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">8つの強みドメイン</div>
+          <div class="feature-desc">分析思考・達成欲・共感力・着想力・指導力・学習欲・調和性・適応性</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">リアルタイム分析</div>
+          <div class="feature-desc">回答するたびにドメインスコアがリアルタイムで更新。確信度メーターで収束を可視化</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">プライバシー保護</div>
+          <div class="feature-desc">すべての処理はブラウザ内で完結。外部サーバーへのデータ送信は一切なし</div>
+        </div>
+      </div>
+
+      <div class="landing-stats">
+        <div class="stat"><span class="stat-number">20</span>&nbsp;問</div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-number">8</span>&nbsp;ドメイン</div>
+        <div class="stat-divider"></div>
+        <div class="stat">約3〜5分</div>
+      </div>
+
+      <button class="btn-start" id="btnStart">診断を開始する</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Quiz Screen
+       ============================================================ -->
+  <div id="quiz" class="quiz-screen">
+    <div class="progress-container">
+      <div class="progress-info">
+        <span class="progress-label">強みドメイン診断</span>
+        <span id="progressCount">0 / 20</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+      </div>
+      <div class="confidence-container">
+        <span>確信度</span>
+        <div class="confidence-track">
+          <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
+        </div>
+        <span id="confidenceLabel">0%</span>
+      </div>
+    </div>
+
+    <div class="quiz-main">
+      <div class="thinking-orb" id="thinkingOrb"></div>
+      <div class="question-area" id="questionArea">
+        <!-- 質問が動的に挿入される -->
+      </div>
+    </div>
+
+    <div class="domain-sidebar">
+      <div class="domain-bars-container" id="domainBars">
+        <!-- ドメインバーが動的に挿入される -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Results Screen
+       ============================================================ -->
+  <div id="results" class="results-screen">
+    <div class="results-hero">
+      <p class="result-label">YOUR STRENGTH PROFILE</p>
+      <h2 id="resultTypeName"></h2>
+      <div class="keywords" id="resultKeywords"></div>
+      <p class="result-summary" id="resultSummary"></p>
+    </div>
+
+    <div class="results-content">
+      <!-- レーダーチャート -->
+      <div class="result-section">
+        <div class="result-section-title">Strength Radar</div>
+        <div class="chart-container" id="radarChart"></div>
+      </div>
+
+      <!-- TOP3 強み -->
+      <div class="result-section">
+        <div class="result-section-title">Top 3 Strengths</div>
+        <div class="top3-container" id="top3Container"></div>
+      </div>
+
+      <!-- 全ドメインスコア -->
+      <div class="result-section">
+        <div class="result-section-title">All Domains</div>
+        <div id="allDomainsContainer"></div>
+      </div>
+
+      <!-- シナジー分析 -->
+      <div class="result-section">
+        <div class="result-section-title">Synergy Analysis</div>
+        <div class="synergy-card" id="synergyContainer"></div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-action" id="btnShareResult">結果をコピー</button>
+      <button class="btn-action primary" id="btnRestart">もう一度診断する</button>
+    </div>
+
+    <footer class="app-footer">
+      <p>強みドメイン診断 &mdash; Adaptive Strength Domain Finder</p>
+      <p>アキネーター方式アダプティブ質問による強み分析ツール</p>
+    </footer>
+  </div>
+
+  <script src="js/strength-engine.js"></script>
+  <script src="js/strength-app.js"></script>
+</body>
+</html>
