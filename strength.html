@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>強みドメイン診断 - アキネーター方式</title>
-  <meta name="description" content="アキネーター方式のアダプティブ質問で、あなたの強みドメインを20問で割り出します。8つの強みドメインからTOP3を特定。">
+  <title>得意ドメイン診断 - あなたの専門分野を特定</title>
+  <meta name="description" content="アキネーター方式のアダプティブ質問で、あなたの得意な知識・専門領域を20問で特定。映画、音楽、プログラミング、料理など15ドメインからTOP3＋ハンディキャップを診断。">
   <meta name="theme-color" content="#0f0f1a">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="stylesheet" href="css/strength.css">
@@ -17,11 +17,11 @@
   <div id="landing" class="landing">
     <div class="landing-content">
       <div class="landing-orb"></div>
-      <h1>強み<span class="accent">ドメイン</span>診断</h1>
-      <p class="subtitle">Adaptive Strength Domain Finder</p>
+      <h1>得意<span class="accent">ドメイン</span>診断</h1>
+      <p class="subtitle">Adaptive Expertise Domain Finder</p>
 
       <div class="landing-info">
-        <p>アキネーター方式のアダプティブ質問で、あなたの<strong>強みドメイン</strong>を割り出します。あなたの回答に応じて次の質問が動的に変化し、たった<strong>20問</strong>で8つの強みドメインからTOP3を特定します。</p>
+        <p>アキネーター方式のアダプティブ質問で、あなたの<strong>得意な知識・専門領域</strong>を割り出します。映画、音楽、プログラミング、料理、スポーツなど<strong>15のドメイン</strong>から、回答に応じて次の質問が動的に変化。たった<strong>20問</strong>で得意分野TOP3＋ハンディキャップを特定します。</p>
       </div>
 
       <div class="landing-features">
@@ -31,14 +31,14 @@
           <div class="feature-desc">回答に応じて次の質問を動的に選択。情報利得を最大化する質問を自動で出題</div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <div class="feature-title">8つの強みドメイン</div>
-          <div class="feature-desc">分析思考・達成欲・共感力・着想力・指導力・学習欲・調和性・適応性</div>
+          <div class="feature-icon">🏷️</div>
+          <div class="feature-title">具体的な専門領域</div>
+          <div class="feature-desc">映画・音楽・料理・プログラミングなど、15の具体ドメインを6大カテゴリで分類</div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <div class="feature-title">リアルタイム分析</div>
-          <div class="feature-desc">回答するたびにドメインスコアがリアルタイムで更新。確信度メーターで収束を可視化</div>
+          <div class="feature-icon">🏆</div>
+          <div class="feature-title">称号＋ハンディキャップ</div>
+          <div class="feature-desc">TOP3の得意分野から称号を生成。苦手分野もハンディキャップとして可視化</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🔒</div>
@@ -47,10 +47,30 @@
         </div>
       </div>
 
+      <div class="landing-domains">
+        <span class="landing-domain">🎬 映画</span>
+        <span class="landing-domain">🎵 音楽</span>
+        <span class="landing-domain">📺 アニメ</span>
+        <span class="landing-domain">🎮 ゲーム</span>
+        <span class="landing-domain">📖 読書</span>
+        <span class="landing-domain">🏛️ 歴史</span>
+        <span class="landing-domain">💻 IT</span>
+        <span class="landing-domain">🔬 科学</span>
+        <span class="landing-domain">🎨 アート</span>
+        <span class="landing-domain">📷 写真</span>
+        <span class="landing-domain">🍳 料理</span>
+        <span class="landing-domain">✈️ 旅行</span>
+        <span class="landing-domain">👗 ファッション</span>
+        <span class="landing-domain">⚽ スポーツ</span>
+        <span class="landing-domain">🏔️ アウトドア</span>
+      </div>
+
       <div class="landing-stats">
         <div class="stat"><span class="stat-number">20</span>&nbsp;問</div>
         <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-number">8</span>&nbsp;ドメイン</div>
+        <div class="stat"><span class="stat-number">15</span>&nbsp;ドメイン</div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-number">6</span>&nbsp;カテゴリ</div>
         <div class="stat-divider"></div>
         <div class="stat">約3〜5分</div>
       </div>
@@ -65,7 +85,7 @@
   <div id="quiz" class="quiz-screen">
     <div class="progress-container">
       <div class="progress-info">
-        <span class="progress-label">強みドメイン診断</span>
+        <span class="progress-label">得意ドメイン診断</span>
         <span id="progressCount">0 / 20</span>
       </div>
       <div class="progress-bar-track">
@@ -99,35 +119,42 @@
        ============================================================ -->
   <div id="results" class="results-screen">
     <div class="results-hero">
-      <p class="result-label">YOUR STRENGTH PROFILE</p>
+      <p class="result-label">YOUR EXPERTISE PROFILE</p>
       <h2 id="resultTypeName"></h2>
-      <div class="keywords" id="resultKeywords"></div>
+      <div class="result-breakdown" id="resultBreakdown"></div>
+      <div class="result-categories" id="resultCategories"></div>
       <p class="result-summary" id="resultSummary"></p>
     </div>
 
     <div class="results-content">
-      <!-- レーダーチャート -->
+      <!-- カテゴリ別レーダーチャート -->
       <div class="result-section">
-        <div class="result-section-title">Strength Radar</div>
+        <div class="result-section-title">Category Radar</div>
         <div class="chart-container" id="radarChart"></div>
       </div>
 
-      <!-- TOP3 強み -->
+      <!-- TOP3 得意ドメイン -->
       <div class="result-section">
-        <div class="result-section-title">Top 3 Strengths</div>
+        <div class="result-section-title">Top 3 Expertise</div>
         <div class="top3-container" id="top3Container"></div>
       </div>
 
-      <!-- 全ドメインスコア -->
+      <!-- ハンディキャップ -->
       <div class="result-section">
-        <div class="result-section-title">All Domains</div>
-        <div id="allDomainsContainer"></div>
+        <div class="result-section-title">Handicap</div>
+        <div class="handicap-container" id="handicapContainer"></div>
       </div>
 
-      <!-- シナジー分析 -->
+      <!-- 全ドメインスコア（カテゴリ別） -->
       <div class="result-section">
-        <div class="result-section-title">Synergy Analysis</div>
-        <div class="synergy-card" id="synergyContainer"></div>
+        <div class="result-section-title">All Domains</div>
+        <div class="all-domains-grouped" id="allDomainsContainer"></div>
+      </div>
+
+      <!-- 組み合わせ分析 -->
+      <div class="result-section">
+        <div class="result-section-title">Combination Analysis</div>
+        <div class="synergy-card" id="combinationContainer"></div>
       </div>
     </div>
 
@@ -137,8 +164,8 @@
     </div>
 
     <footer class="app-footer">
-      <p>強みドメイン診断 &mdash; Adaptive Strength Domain Finder</p>
-      <p>アキネーター方式アダプティブ質問による強み分析ツール</p>
+      <p>得意ドメイン診断 &mdash; Adaptive Expertise Domain Finder</p>
+      <p>アキネーター方式アダプティブ質問による知識・専門領域特定ツール</p>
     </footer>
   </div>
 

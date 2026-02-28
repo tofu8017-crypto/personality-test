@@ -1,8 +1,8 @@
 /**
- * 強みドメイン診断 - アキネーター方式 UI
+ * 得意ドメイン診断 - アキネーター方式 UI
  *
- * 1問ずつ表示し、アダプティブに次の質問を選択。
- * 確信度メーター、ドメイン確率バー、アニメーション遷移を実装。
+ * 15ドメイン×6大カテゴリの知識・専門領域をアダプティブに特定。
+ * 称号＋内訳＋ハンディキャップを表示。
  */
 
 var StrengthApp = {
@@ -54,7 +54,6 @@ var StrengthApp = {
     var area = document.getElementById('questionArea');
     var self = this;
 
-    // フェードアウト
     area.classList.add('fade-out');
 
     setTimeout(function() {
@@ -76,10 +75,8 @@ var StrengthApp = {
       }
 
       html += '</div>';
-
       area.innerHTML = html;
 
-      // ボタンイベント
       var buttons = area.querySelectorAll('.answer-btn');
       for (var j = 0; j < buttons.length; j++) {
         buttons[j].addEventListener('click', function() {
@@ -90,10 +87,7 @@ var StrengthApp = {
 
       area.classList.remove('fade-out');
       area.classList.add('fade-in');
-
-      setTimeout(function() {
-        area.classList.remove('fade-in');
-      }, 400);
+      setTimeout(function() { area.classList.remove('fade-in'); }, 400);
     }, 300);
   },
 
@@ -104,7 +98,6 @@ var StrengthApp = {
     var self = this;
     this.isTransitioning = true;
 
-    // ボタンのフィードバック
     var buttons = document.querySelectorAll('.answer-btn');
     for (var i = 0; i < buttons.length; i++) {
       if (parseInt(buttons[i].dataset.value) === value) {
@@ -114,10 +107,8 @@ var StrengthApp = {
       }
     }
 
-    // スコア更新
     StrengthEngine.processAnswer(this.session, value);
 
-    // "思考中" エフェクト
     this.showThinking(function() {
       self.updateDomainBars();
       self.isTransitioning = false;
@@ -125,13 +116,9 @@ var StrengthApp = {
     });
   },
 
-  // ==========================================================
-  // 思考中アニメーション
-  // ==========================================================
   showThinking: function(callback) {
     var orb = document.getElementById('thinkingOrb');
     orb.classList.add('thinking');
-
     setTimeout(function() {
       orb.classList.remove('thinking');
       callback();
@@ -139,7 +126,7 @@ var StrengthApp = {
   },
 
   // ==========================================================
-  // プログレス更新
+  // プログレス・確信度
   // ==========================================================
   updateProgress: function() {
     var progress = (this.session.questionCount / StrengthEngine.MAX_QUESTIONS) * 100;
@@ -148,9 +135,6 @@ var StrengthApp = {
       this.session.questionCount + ' / ' + StrengthEngine.MAX_QUESTIONS;
   },
 
-  // ==========================================================
-  // 確信度メーター更新
-  // ==========================================================
   updateConfidence: function() {
     var confidence = StrengthEngine.getConfidence(this.session);
     var fill = document.getElementById('confidenceFill');
@@ -159,7 +143,6 @@ var StrengthApp = {
     fill.style.width = confidence + '%';
     label.textContent = confidence + '%';
 
-    // 色変化
     if (confidence >= 70) {
       fill.style.background = 'linear-gradient(90deg, #22d3ee, #10b981)';
     } else if (confidence >= 40) {
@@ -170,7 +153,7 @@ var StrengthApp = {
   },
 
   // ==========================================================
-  // ドメイン確率バー更新
+  // ドメインサイドバー（15ドメイン）
   // ==========================================================
   updateDomainBars: function() {
     var container = document.getElementById('domainBars');
@@ -181,13 +164,7 @@ var StrengthApp = {
     for (var i = 0; i < sorted.length; i++) {
       var domainId = sorted[i].id;
       var score = normalized[domainId];
-      var domain = null;
-      for (var j = 0; j < StrengthEngine.DOMAINS.length; j++) {
-        if (StrengthEngine.DOMAINS[j].id === domainId) {
-          domain = StrengthEngine.DOMAINS[j];
-          break;
-        }
-      }
+      var domain = StrengthEngine.getDomainById(domainId);
 
       var isTop = i < 3;
       var barClass = isTop ? 'domain-bar-item top' : 'domain-bar-item';
@@ -215,37 +192,59 @@ var StrengthApp = {
     document.getElementById('results').classList.add('active');
 
     this.renderResultHero();
-    this.renderRadarChart();
+    this.renderCategoryRadar();
     this.renderTop3();
+    this.renderHandicap();
     this.renderAllDomains();
-    this.renderSynergy();
+    this.renderCombination();
 
     window.scrollTo(0, 0);
   },
 
+  // ==========================================================
+  // 結果ヒーロー（称号＋内訳）
+  // ==========================================================
   renderResultHero: function() {
     var r = this.results;
     document.getElementById('resultTypeName').textContent = r.typeName;
     document.getElementById('resultSummary').textContent = r.summary;
 
-    // キーワードタグ
-    var kwHtml = '';
+    // 内訳タグ（TOP3ドメイン＋カテゴリ表示）
+    var bkHtml = '';
     for (var i = 0; i < r.top3.length; i++) {
-      kwHtml += '<span class="keyword">' + r.top3[i].icon + ' ' + r.top3[i].name + '</span>';
+      var d = r.top3[i];
+      if (i > 0) bkHtml += '<span class="breakdown-separator">×</span>';
+      bkHtml += '<span class="breakdown-tag" style="border-color:' + d.color + ';color:' + d.color + '">';
+      bkHtml += d.icon + ' ' + d.name;
+      bkHtml += '</span>';
     }
-    document.getElementById('resultKeywords').innerHTML = kwHtml;
+    document.getElementById('resultBreakdown').innerHTML = bkHtml;
+
+    // カテゴリバッジ
+    var catHtml = '';
+    var shownCats = [];
+    for (var j = 0; j < r.top3.length; j++) {
+      var cat = r.top3[j].category;
+      if (shownCats.indexOf(cat) === -1) {
+        shownCats.push(cat);
+        catHtml += '<span class="category-badge" style="border-color:' + r.top3[j].categoryColor + ';color:' + r.top3[j].categoryColor + '">';
+        catHtml += cat;
+        catHtml += '</span>';
+      }
+    }
+    document.getElementById('resultCategories').innerHTML = catHtml;
   },
 
   // ==========================================================
-  // レーダーチャート
+  // カテゴリ別レーダーチャート（6大カテゴリ）
   // ==========================================================
-  renderRadarChart: function() {
-    var domains = this.results.domains;
+  renderCategoryRadar: function() {
+    var cats = this.results.categoryScores;
     var size = 360;
     var cx = size / 2;
     var cy = size / 2;
     var maxR = 120;
-    var n = domains.length;
+    var n = cats.length;
 
     function polarToXY(angleDeg, radius) {
       var rad = (angleDeg - 90) * Math.PI / 180;
@@ -275,7 +274,7 @@ var StrengthApp = {
     // データポリゴン
     var dataPoints = [];
     for (var di = 0; di < n; di++) {
-      var val = domains[di].score / 100;
+      var val = cats[di].score / 100;
       var dp = polarToXY((360 / n) * di, maxR * val);
       dataPoints.push({ x: dp.x, y: dp.y });
     }
@@ -284,15 +283,15 @@ var StrengthApp = {
     // ドット
     var dots = '';
     for (var dti = 0; dti < dataPoints.length; dti++) {
-      dots += '<circle cx="' + dataPoints[dti].x.toFixed(1) + '" cy="' + dataPoints[dti].y.toFixed(1) + '" r="5" fill="' + domains[dti].color + '" stroke="#0f0f1a" stroke-width="2"/>';
+      dots += '<circle cx="' + dataPoints[dti].x.toFixed(1) + '" cy="' + dataPoints[dti].y.toFixed(1) + '" r="5" fill="' + cats[dti].color + '" stroke="#0f0f1a" stroke-width="2"/>';
     }
 
     // ラベル
     var labelTexts = '';
     for (var li = 0; li < n; li++) {
-      var lp = polarToXY((360 / n) * li, maxR + 32);
-      labelTexts += '<text x="' + lp.x.toFixed(1) + '" y="' + (lp.y - 6).toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="600" fill="#e8e8f0">' + domains[li].icon + ' ' + domains[li].name + '</text>';
-      labelTexts += '<text x="' + lp.x.toFixed(1) + '" y="' + (lp.y + 10).toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="' + domains[li].color + '" font-weight="700">' + domains[li].score + '</text>';
+      var lp = polarToXY((360 / n) * li, maxR + 36);
+      labelTexts += '<text x="' + lp.x.toFixed(1) + '" y="' + (lp.y - 6).toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="600" fill="#e8e8f0">' + cats[li].name + '</text>';
+      labelTexts += '<text x="' + lp.x.toFixed(1) + '" y="' + (lp.y + 10).toFixed(1) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="' + cats[li].color + '" font-weight="700">' + cats[li].score + '</text>';
     }
 
     var svg = '<svg viewBox="0 0 ' + size + ' ' + size + '" class="radar-chart" width="' + size + '" height="' + size + '">' +
@@ -305,37 +304,33 @@ var StrengthApp = {
   },
 
   // ==========================================================
-  // TOP3 強みカード
+  // TOP3 得意ドメインカード
   // ==========================================================
   renderTop3: function() {
     var top3 = this.results.top3;
     var medals = ['1st', '2nd', '3rd'];
-    var medalColors = ['#f59e0b', '#94a3b8', '#cd7c32'];
     var html = '';
 
     for (var i = 0; i < top3.length; i++) {
       var d = top3[i];
       html += '<div class="top3-card" style="border-color:' + d.color + '">';
       html += '<div class="top3-rank" style="background:' + d.color + '">' + medals[i] + '</div>';
+      html += '<div class="top3-header">';
       html += '<div class="top3-icon">' + d.icon + '</div>';
+      html += '<div>';
+      html += '<div class="top3-category-badge" style="color:' + d.categoryColor + '">' + d.category + '</div>';
       html += '<div class="top3-name" style="color:' + d.color + '">' + d.name + '</div>';
-      html += '<div class="top3-score">' + d.score + ' / 100</div>';
-      html += '<div class="top3-short">' + d.short + '</div>';
+      html += '</div>';
+      html += '<div class="top3-score">' + d.score + '</div>';
+      html += '</div>';
       html += '<div class="top3-desc">' + d.description + '</div>';
 
-      // 強みリスト
-      html += '<div class="top3-strengths"><strong>この強みの表れ方</strong><ul>';
-      for (var j = 0; j < d.strengths.length; j++) {
-        html += '<li>' + d.strengths[j] + '</li>';
+      // キーワード
+      html += '<div class="top3-keywords">';
+      for (var j = 0; j < d.keywords.length; j++) {
+        html += '<span class="domain-keyword" style="border-color:' + d.color + '">' + d.keywords[j] + '</span>';
       }
-      html += '</ul></div>';
-
-      // 活かし方
-      html += '<div class="top3-tips"><strong>さらに活かすために</strong><ul>';
-      for (var k = 0; k < d.tips.length; k++) {
-        html += '<li>' + d.tips[k] + '</li>';
-      }
-      html += '</ul></div>';
+      html += '</div>';
 
       html += '</div>';
     }
@@ -344,46 +339,90 @@ var StrengthApp = {
   },
 
   // ==========================================================
-  // 全ドメインスコア
+  // ハンディキャップ（苦手ドメイン）
   // ==========================================================
-  renderAllDomains: function() {
-    var domains = this.results.domains;
-    var html = '<div class="all-domains-chart">';
+  renderHandicap: function() {
+    var handicap = this.results.handicap;
+    var html = '';
 
-    for (var i = 0; i < domains.length; i++) {
-      var d = domains[i];
-      var isTop = i < 3;
-      html += '<div class="all-domain-row' + (isTop ? ' top-row' : '') + '">';
-      html += '<span class="all-domain-rank">#' + d.rank + '</span>';
-      html += '<span class="all-domain-icon">' + d.icon + '</span>';
-      html += '<span class="all-domain-name">' + d.name + '</span>';
-      html += '<div class="all-domain-track">';
-      html += '<div class="all-domain-fill" style="width:' + d.score + '%;background:' + d.color + '"></div>';
+    for (var i = 0; i < handicap.length; i++) {
+      var d = handicap[i];
+      html += '<div class="handicap-card">';
+      html += '<div class="handicap-header">';
+      html += '<span class="handicap-icon">' + d.icon + '</span>';
+      html += '<span class="handicap-name">' + d.name + '</span>';
+      html += '<span class="handicap-category">' + d.category + '</span>';
+      html += '<span class="handicap-score">' + d.score + '</span>';
       html += '</div>';
-      html += '<span class="all-domain-score">' + d.score + '</span>';
+      html += '<p class="handicap-growth">' + d.growth + '</p>';
       html += '</div>';
     }
 
-    html += '</div>';
+    document.getElementById('handicapContainer').innerHTML = html;
+  },
+
+  // ==========================================================
+  // 全ドメインスコア（カテゴリ別グルーピング）
+  // ==========================================================
+  renderAllDomains: function() {
+    var domains = this.results.domains;
+    var normalized = {};
+    for (var i = 0; i < domains.length; i++) {
+      normalized[domains[i].id] = domains[i];
+    }
+
+    var html = '';
+    var categories = StrengthEngine.CATEGORIES;
+
+    for (var ci = 0; ci < categories.length; ci++) {
+      var cat = categories[ci];
+      html += '<div class="cat-group">';
+      html += '<div class="cat-group-header" style="color:' + cat.color + '">' + cat.name + '</div>';
+
+      for (var di = 0; di < cat.domains.length; di++) {
+        var domainId = cat.domains[di];
+        var d = normalized[domainId];
+        if (!d) continue;
+
+        var isTop = d.rank <= 3;
+        var isBottom = d.rank > (StrengthEngine.DOMAINS.length - 3);
+        var rowClass = 'all-domain-row';
+        if (isTop) rowClass += ' top-row';
+        if (isBottom) rowClass += ' bottom-row';
+
+        html += '<div class="' + rowClass + '">';
+        html += '<span class="all-domain-rank">#' + d.rank + '</span>';
+        html += '<span class="all-domain-icon">' + d.icon + '</span>';
+        html += '<span class="all-domain-name">' + d.name + '</span>';
+        html += '<div class="all-domain-track">';
+        html += '<div class="all-domain-fill" style="width:' + d.score + '%;background:' + d.color + '"></div>';
+        html += '</div>';
+        html += '<span class="all-domain-score">' + d.score + '</span>';
+        html += '</div>';
+      }
+
+      html += '</div>';
+    }
+
     document.getElementById('allDomainsContainer').innerHTML = html;
   },
 
   // ==========================================================
-  // シナジー分析
+  // 組み合わせ分析
   // ==========================================================
-  renderSynergy: function() {
-    var synergy = this.results.synergy;
+  renderCombination: function() {
+    var combination = this.results.combination;
     var top3 = this.results.top3;
 
     var html = '<div class="synergy-visual">';
     for (var i = 0; i < top3.length; i++) {
-      if (i > 0) html += '<span class="synergy-plus">+</span>';
+      if (i > 0) html += '<span class="synergy-plus">×</span>';
       html += '<span class="synergy-domain" style="border-color:' + top3[i].color + ';color:' + top3[i].color + '">' + top3[i].icon + ' ' + top3[i].name + '</span>';
     }
     html += '</div>';
-    html += '<p class="synergy-text">' + synergy + '</p>';
+    html += '<p class="synergy-text">' + combination + '</p>';
 
-    document.getElementById('synergyContainer').innerHTML = html;
+    document.getElementById('combinationContainer').innerHTML = html;
   },
 
   // ==========================================================
@@ -393,18 +432,27 @@ var StrengthApp = {
     if (!this.results) return;
     var r = this.results;
 
-    var text = '【強みドメイン診断 結果】\n\n';
-    text += 'タイプ: ' + r.typeName + '\n';
+    var text = '【得意ドメイン診断 結果】\n\n';
+    text += '称号: ' + r.typeName + '\n';
+    text += '得意: ' + r.top3.map(function(d) { return d.icon + ' ' + d.name; }).join(' × ') + '\n\n';
     text += r.summary + '\n\n';
-    text += '--- 強みTOP3 ---\n';
+
+    text += '--- 得意ドメイン TOP3 ---\n';
     for (var i = 0; i < r.top3.length; i++) {
-      text += (i + 1) + '. ' + r.top3[i].icon + ' ' + r.top3[i].name + ' (' + r.top3[i].score + ')\n';
+      text += (i + 1) + '. ' + r.top3[i].icon + ' ' + r.top3[i].name + '（' + r.top3[i].category + '）' + r.top3[i].score + '\n';
     }
-    text += '\n--- 全ドメイン ---\n';
-    for (var j = 0; j < r.domains.length; j++) {
-      text += r.domains[j].icon + ' ' + r.domains[j].name + ': ' + r.domains[j].score + '\n';
+
+    text += '\n--- ハンディキャップ ---\n';
+    for (var h = 0; h < r.handicap.length; h++) {
+      text += '▽ ' + r.handicap[h].icon + ' ' + r.handicap[h].name + '（' + r.handicap[h].category + '）' + r.handicap[h].score + '\n';
     }
-    text += '\n' + r.synergy;
+
+    text += '\n--- カテゴリスコア ---\n';
+    for (var c = 0; c < r.categoryScores.length; c++) {
+      text += r.categoryScores[c].name + ': ' + r.categoryScores[c].score + '\n';
+    }
+
+    text += '\n' + r.combination;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       var btn = document.getElementById('btnShareResult');
