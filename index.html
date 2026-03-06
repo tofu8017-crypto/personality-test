@@ -3,14 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>多次元パーソナリティ検査</title>
-  <meta name="description" content="6つの科学的理論を統合した多次元パーソナリティ検査。Big Five、Holland RIASEC、VIA-IS、愛着理論、SPS、交流分析の29次元で個人特性を立体的に分析。全70問・約10〜15分で完了。">
+  <title>アニマルオーラ診断32</title>
+  <meta name="description" content="6つの科学的理論を統合し、29次元であなたのパーソナリティを分析。8種の守護動物と4色のオーラで導く32タイプ診断。Big Five・RIASEC・VIA-IS・愛着理論・SPS・交流分析。全70問・約10〜15分。">
   <meta name="theme-color" content="#0f0f1a">
+  <meta property="og:title" content="アニマルオーラ診断32">
+  <meta property="og:description" content="8種の守護動物と4色のオーラで導く全32タイプ。6つの科学的理論 × 29次元であなたのパーソナリティを分析。">
+  <meta property="og:image" content="https://personality-app-sigma.vercel.app/assets/ogp.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://personality-app-sigma.vercel.app/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="アニマルオーラ診断32">
+  <meta name="twitter:description" content="8種の守護動物と4色のオーラで導く全32タイプ診断">
+  <meta name="twitter:image" content="https://personality-app-sigma.vercel.app/assets/ogp.png">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+  <!-- テーマ切替 -->
+  <div class="theme-toggle" id="themeToggle">
+    <button data-theme="light" title="ライトモード">☀️</button>
+    <button data-theme="dark" title="ダークモード" class="active">🌙</button>
+    <button data-theme="system" title="システム設定に合わせる">💻</button>
+  </div>
 
   <!-- ============================================================
        Landing Page
@@ -21,14 +37,14 @@
         <div class="landing-icon">
           <img src="assets/icon.svg" alt="" width="72" height="72">
         </div>
-        <h1>多次元<span class="accent">パーソナリティ</span>検査</h1>
+        <h1>アニマルオーラ<span class="accent">診断</span>32</h1>
         <p class="subtitle">
-          Multidimensional Personality Inventory
+          Animal Aura Diagnosis — 32 Types
         </p>
       </div>
 
       <div class="landing-intro">
-        <p>この検査は、世界の心理学研究で最も高いエビデンスを持つ<strong>6つの理論</strong>を統合し、あなたのパーソナリティを<strong>29の次元</strong>から立体的に分析します。</p>
+        <p>この診断は、世界の心理学研究で最も高いエビデンスを持つ<strong>6つの理論</strong>を統合し、あなたのパーソナリティを<strong>29の次元</strong>から立体的に分析。<strong>8種の守護動物</strong>と<strong>4色のオーラ</strong>で導く<strong>全32タイプ</strong>から、あなただけのアニマルオーラを特定します。</p>
         <p>「あなたがどんな人か」だけでなく、「どんな仕事環境で力を発揮できるか」「何があなたの動機になるか」「どんな人間関係のパターンを持っているか」「ストレスにどう対処すればよいか」まで、多角的にプロファイリングします。</p>
         <p class="landing-intro-note">全70問・5段階評価。直感で答えてください。正解・不正解はありません。所要時間は約10〜15分です。</p>
       </div>
@@ -94,6 +110,8 @@
       </div>
 
       <div class="landing-stats">
+        <div class="stat"><span class="stat-number">32</span>&nbsp;タイプ</div>
+        <div class="stat-divider"></div>
         <div class="stat"><span class="stat-number">70</span>&nbsp;問</div>
         <div class="stat-divider"></div>
         <div class="stat"><span class="stat-number">29</span>&nbsp;次元</div>
@@ -101,6 +119,12 @@
         <div class="stat"><span class="stat-number">6</span>&nbsp;理論統合</div>
         <div class="stat-divider"></div>
         <div class="stat">約10〜15分</div>
+      </div>
+
+      <!-- ランディングページ用32タイプ図鑑 -->
+      <div class="landing-gallery-section">
+        <button class="btn-gallery-toggle" id="btnGalleryToggle">🐾 全32タイプを見る</button>
+        <div id="landingGallery" class="type-gallery" style="display:none"></div>
       </div>
 
       <div class="landing-disclaimer">
@@ -140,9 +164,11 @@
        Results Screen
        ============================================================ -->
   <div id="results" class="results-screen">
-    <div class="results-hero">
-      <p class="type-name">YOUR PERSONALITY PROFILE</p>
+    <div class="results-hero" id="resultsHero">
+      <div class="animal-emoji" id="animalEmoji"></div>
+      <p class="type-name">YOUR ANIMAL AURA</p>
       <h2 id="typeName"></h2>
+      <p class="rarity-badge" id="rarityBadge"></p>
       <div class="keywords" id="keywords"></div>
       <p class="summary-text" id="summaryText"></p>
     </div>
@@ -151,16 +177,38 @@
     </div>
     <div class="tab-content" id="tabContent"></div>
     <div class="action-bar">
-      <button class="btn-action" id="btnShare">&#x1F4CB; 結果をコピー</button>
+      <button class="btn-action" id="btnShare">📋 全結果をコピー</button>
+      <button class="btn-action btn-sns-x" id="btnShareX">X でシェア</button>
+      <button class="btn-action btn-sns-line" id="btnShareLINE">LINE でシェア</button>
+      <button class="btn-action" id="btnPDF">📥 PDFダウンロード</button>
+      <button class="btn-action btn-ai-context" id="btnAIContext">🤖 AIエージェント最適化コンテキスト</button>
       <button class="btn-action primary" id="btnRestart">もう一度検査する</button>
     </div>
+    <div id="typeGallery" class="type-gallery"></div>
     <footer class="app-footer">
-      <p>多次元パーソナリティ検査 &mdash; Multidimensional Personality Inventory</p>
-      <p>6つの科学的理論に基づく29次元の自己分析ツール</p>
-      <p>※ 本検査は自己理解の補助を目的としており、臨床的な診断に代わるものではありません</p>
+      <p>アニマルオーラ診断32 &mdash; Animal Aura Diagnosis</p>
+      <p>6つの科学的理論に基づく29次元 × 32タイプの自己分析ツール</p>
+      <p>※ 本診断は自己理解の補助を目的としており、臨床的な診断に代わるものではありません</p>
     </footer>
   </div>
 
+  <!-- AIコンテキスト出力モーダル -->
+  <div class="modal-overlay" id="aiContextModal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🤖 AIエージェント最適化コンテキスト</h3>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <p class="modal-description">以下のテキストをコピーして、AIエージェントの設定ファイルに貼り付けてください。あなたのパーソナリティに合わせた対応をAIがしてくれるようになります。</p>
+      <pre class="modal-preview" id="aiContextPreview"></pre>
+      <div class="modal-actions">
+        <button class="btn-action primary" id="btnCopyContext">📋 コピーする</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/questions.js"></script>
   <script src="js/analysis.js"></script>
   <script src="js/app.js"></script>
