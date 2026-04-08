@@ -647,19 +647,12 @@ const AnalysisEngine = {
     const topRiasec = riasec.top3[0];
     const topStrength = strengths.top3[0];
 
-    // パーソナリティタイプ名の生成
-    const typeWords = [];
+    // 動物タイプとオーラ色の判定
+    const animalKey = determineAnimal(bigfive, sensitivity);
+    const auraCode = determineAura(bigfive, egogram);
+    const personalityType = getPersonalityType(animalKey, auraCode);
 
-    if (bf.openness >= 60) typeWords.push("探究者");
-    else typeWords.push("実践者");
-
-    if (bf.extraversion >= 60) typeWords.push("社交的な");
-    else typeWords.push("思慮深い");
-
-    if (bf.agreeableness >= 60) typeWords.push("調和の");
-    else typeWords.push("独立の");
-
-    const typeName = typeWords.join("") + "タイプ";
+    const typeName = personalityType.title;
 
     // 一言サマリー
     const summaryParts = [];
@@ -670,10 +663,30 @@ const AnalysisEngine = {
       summaryParts.push("繊細な感受性を武器に、他者の気持ちに寄り添える力を持っています。");
     }
 
+    // 動物画像パスの生成
+    const animalFileMap = {
+      dolphin: "dolphin", lion: "lion", eagle: "eagle", dog: "dog",
+      cat: "cat", owl: "owl", rabbit: "rabbit", wolf: "wolf"
+    };
+    const colorFileMap = { JH: "gold", JL: "silver", PH: "emerald", PL: "crimson" };
+    const imgFile = animalFileMap[animalKey] + '-' + colorFileMap[auraCode] + '.jpg';
+    const imgPath = 'assets/animals/' + imgFile;
+
     return {
       typeName,
+      typeCode: personalityType.code,
+      animal: ANIMALS[animalKey].name,
+      animalKey,
+      emoji: ANIMALS[animalKey].emoji,
+      color: personalityType.color,
+      aura: AURA_COLORS[auraCode].name,
+      auraCode,
+      image: null, // 動物画像がある場合に設定
       summary: summaryParts.join(""),
-      keywords: this.generateKeywords(bigfive, riasec, strengths, attachment, sensitivity)
+      description: personalityType.description,
+      keywords: personalityType.keywords.concat(
+        this.generateKeywords(bigfive, riasec, strengths, attachment, sensitivity)
+      ).slice(0, 6)
     };
   },
 

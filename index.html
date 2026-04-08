@@ -180,6 +180,7 @@
       <button class="btn-action" id="btnShare">📋 全結果をコピー</button>
       <button class="btn-action btn-sns-x" id="btnShareX">X でシェア</button>
       <button class="btn-action btn-sns-line" id="btnShareLINE">LINE でシェア</button>
+      <button class="btn-action btn-sticker" id="btnSticker">🎨 ステッカーをダウンロード</button>
       <button class="btn-action" id="btnPDF">📥 PDFダウンロード</button>
       <button class="btn-action btn-ai-context" id="btnAIContext">🤖 AIエージェント最適化コンテキスト</button>
       <button class="btn-action primary" id="btnRestart">もう一度検査する</button>
@@ -190,6 +191,21 @@
       <p>6つの科学的理論に基づく29次元 × 32タイプの自己分析ツール</p>
       <p>※ 本診断は自己理解の補助を目的としており、臨床的な診断に代わるものではありません</p>
     </footer>
+  </div>
+
+  <!-- ステッカーテンプレート（html2canvas用・非表示） -->
+  <div id="stickerContainer" style="position:fixed;left:-9999px;top:0;z-index:-1;">
+    <div id="stickerCard" class="sticker-card">
+      <div class="sticker-bg"></div>
+      <div class="sticker-inner">
+        <div class="sticker-emoji" id="stickerEmoji"></div>
+        <div class="sticker-type" id="stickerType"></div>
+        <div class="sticker-aura" id="stickerAura"></div>
+        <div class="sticker-keywords" id="stickerKeywords"></div>
+        <div class="sticker-desc" id="stickerDesc"></div>
+        <div class="sticker-footer">Animal Aura Diagnosis 32</div>
+      </div>
+    </div>
   </div>
 
   <!-- AIコンテキスト出力モーダル -->
@@ -210,6 +226,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/questions.js"></script>
+  <script src="js/types.js"></script>
   <script src="js/analysis.js"></script>
   <script src="js/app.js"></script>
 </body>

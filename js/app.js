@@ -21,6 +21,7 @@ const App = {
     document.getElementById('btnShareLINE').addEventListener('click', () => this.shareToLINE());
     document.getElementById('btnPDF').addEventListener('click', () => this.downloadPDF());
     document.getElementById('btnRestart').addEventListener('click', () => this.restart());
+    document.getElementById('btnSticker').addEventListener('click', () => this.downloadSticker());
     document.getElementById('btnAIContext').addEventListener('click', () => this.showAIContext());
     document.getElementById('modalClose').addEventListener('click', () => this.closeAIContextModal());
     document.getElementById('btnCopyContext').addEventListener('click', () => this.copyAIContext());
@@ -1519,6 +1520,80 @@ const App = {
       btn.textContent = '✅ コピーしました！';
       setTimeout(function() { btn.textContent = original; }, 2000);
     }
+  },
+
+  // ==========================================================
+  // ステッカーダウンロード
+  // ==========================================================
+  downloadSticker() {
+    if (!this.results) return;
+    var s = this.results.summary;
+    var btn = document.getElementById('btnSticker');
+    var originalText = btn.textContent;
+    btn.textContent = '⏳ 生成中...';
+    btn.disabled = true;
+
+    // ステッカーカードにデータを反映
+    var card = document.getElementById('stickerCard');
+    card.style.setProperty('--sticker-color', s.color);
+    document.getElementById('stickerEmoji').textContent = s.emoji;
+
+    var typeEl = document.getElementById('stickerType');
+    typeEl.textContent = s.typeName;
+    typeEl.style.color = s.color;
+
+    var auraEl = document.getElementById('stickerAura');
+    auraEl.textContent = s.aura + 'のオーラ';
+    auraEl.style.borderColor = s.color + '66';
+
+    var kwHtml = '';
+    var kws = s.keywords.slice(0, 4);
+    for (var i = 0; i < kws.length; i++) {
+      kwHtml += '<span style="color:' + s.color + ';border-color:' + s.color + '40">' + kws[i] + '</span>';
+    }
+    document.getElementById('stickerKeywords').innerHTML = kwHtml;
+    document.getElementById('stickerDesc').textContent = s.description || s.summary;
+
+    // 背景グローをテーマカラーで設定
+    var bgEl = card.querySelector('.sticker-bg');
+    bgEl.style.background =
+      'radial-gradient(ellipse at 30% 20%, ' + s.color + '40 0%, transparent 60%), ' +
+      'radial-gradient(ellipse at 70% 80%, ' + s.color + '26 0%, transparent 50%), ' +
+      'linear-gradient(160deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%)';
+
+    // ステッカーをレンダリング位置に一時表示
+    var container = document.getElementById('stickerContainer');
+    container.style.left = '0';
+    container.style.opacity = '1';
+
+    // html2canvas でキャプチャ
+    setTimeout(function() {
+      html2canvas(card, {
+        scale: 3,
+        backgroundColor: null,
+        useCORS: true,
+        logging: false
+      }).then(function(canvas) {
+        // 非表示に戻す
+        container.style.left = '-9999px';
+
+        // ダウンロード
+        var link = document.createElement('a');
+        link.download = 'animal-aura-sticker-' + s.typeCode + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        btn.textContent = '✅ ダウンロード完了！';
+        setTimeout(function() {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      }).catch(function() {
+        container.style.left = '-9999px';
+        btn.textContent = originalText;
+        btn.disabled = false;
+      });
+    }, 100);
   },
 
   // ==========================================================
